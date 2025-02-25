@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+        body {
+            text-align: center;
+            background-color: #ffcccb;
+            overflow: hidden;
+            font-family: "Poppins", sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .hidden {
+            display: none;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #d81b60;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+        }
+
+        img{
+            width: 25%;
+            height: 100%;
+        }
+
+        /*mobile view*/
+        @media screen and (max-width: 768px){
+            body {
+                justify-content: center;
+                align-items: center;
+            }
+            .container {
+                width: 90%;
+                margin-top: 20px;
+                padding: 15px;
+            }
+            button {
+                width: 100%;
+            }
+            img {
+                width: 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Happy Birthday! 🎂</h1>
+        <p>Click the button below for a surprise!</p>
+        <button id="surpriseButton">Click Me!</button>
+        <div id="message" class="hidden">
+            <h2>🎈 Happy Birthday, Aisyah (🥝) 🎈</h2>
+            <p>Wishing you all the happiness in the world!</p>
+            <img src="dk.jpg" alt="DK">
+        </div>
+    </div>
+    <canvas id="confettiCanvas"></canvas>
+
+    <script>
+        document.getElementById("surpriseButton").addEventListener("click", function() {
+            document.getElementById("message").classList.remove("hidden");
+            startConfetti();
+        });
+
+        function startConfetti() {
+            const canvas = document.getElementById("confettiCanvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let confetti = [];
+            for (let i = 0; i < 100; i++) {
+                confetti.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 6 + 2,
+                    dx: Math.random() * 2 - 1,
+                    dy: Math.random() * 2 + 1,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`
+                });
+            }
+            function drawConfetti() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                confetti.forEach(c => {
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+                    ctx.fillStyle = c.color;
+                    ctx.fill();
+                    c.x += c.dx;
+                    c.y += c.dy;
+                    if (c.y > canvas.height) c.y = 0;
+                });
+                requestAnimationFrame(drawConfetti);
+            }
+            drawConfetti();
+        }
+    </script>
+</body>
+</html>
